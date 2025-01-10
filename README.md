@@ -26,7 +26,6 @@ This is a Django-based REST API for an **Income and Expense Tracker**. It allows
 
 - **GET /api/transactions/**: Get a list of all transactions for the currently authenticated user.
 - **POST /api/transactions/**: Create a new transaction (income or expense).
-- **GET /api/transactions/{uuid}/**: Get details of a specific transaction by UUID.
 - **PUT /api/transactions/{uuid}/**: Update a specific transaction by UUID.
 - **DELETE /api/transactions/{uuid}/**: Delete a specific transaction by UUID.
 
