@@ -34,7 +34,6 @@ This is a Django-based REST API for an **Income and Expense Tracker**. It allows
 
 - **GET /api/categories/**: Get a list of all categories.
 - **POST /api/categories/**: Create a new category for transactions.
-- **GET /api/categories/{uuid}/**: Get details of a specific category by UUID.
 - **PUT /api/categories/{uuid}/**: Update a specific category by UUID.
 - **DELETE /api/categories/{uuid}/**: Delete a specific category by UUID.
 
