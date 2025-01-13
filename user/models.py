@@ -21,8 +21,8 @@ class User(AbstractUser):
 
 
 class ActiveTokens(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Token")
-    token = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="token")
+    token = models.CharField(max_length=1024, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
