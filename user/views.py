@@ -122,7 +122,7 @@ class GetUpdateUserView(APIView):
 
 
 class UpdatePasswordUserView(APIView):
-    def post(self, request):
+    def patch(self, request):
         current_password = request.data.get("password")
         new_password = request.data.get("new_password")
 

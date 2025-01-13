@@ -1,5 +1,5 @@
 from django.urls import path
-from transaction.views import TransactionCRUDView, MonthlyReport
+from transaction.views import MonthlyReport
 from .views import (
     UserCreateView,
     LoginView,
@@ -10,7 +10,7 @@ from .views import (
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
-    path("signup/", UserCreateView.as_view(), name="user-signup"),
+    path("register/", UserCreateView.as_view(), name="user-signup"),
     path("login/", LoginView.as_view(), name="user-login"),
     path("logout/", LogoutView.as_view(), name="user-logout"),
     path("change-password/", UpdatePasswordUserView.as_view(), name="change-password"),

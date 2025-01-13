@@ -3,6 +3,7 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from .models import ActiveTokens
 from django.conf import settings
+from rest_framework.exceptions import APIException
 
 
 class CustomTokenAuthentication(BaseAuthentication):
@@ -28,9 +29,15 @@ class CustomTokenAuthentication(BaseAuthentication):
         except jwt.InvalidTokenError:
             raise AuthenticationFailed("Invalid token")
         except Exception as e:
-            raise AuthenticationFailed(str(e))
+            raise UnauthorizedException(str(e))
 
         return (
             user,
             None,
         )
+
+
+class UnauthorizedException(APIException):
+    status_code = 401
+    default_detail = "Unauthorized"
+    default_code = "unauthorized"

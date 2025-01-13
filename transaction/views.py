@@ -4,26 +4,36 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from datetime import datetime, timedelta
 import calendar
-
 from .models import Transaction, User
 from .serializers import TransactionSerializer
 
 
 class TransactionCRUDView(APIView):
-    def get(self, request):
+    def get(self, request, id=None):
         """
-        Get a list of transactions for the authenticated user.
+        If `id` is provided, return a single transaction by ID for the authenticated user.
+        Otherwise, return a list of transactions for the authenticated user.
         """
+        if id:
+            try:
+                transaction = Transaction.objects.get(
+                    id=id, user=request.user, is_deleted=False
+                )
+                serializer = TransactionSerializer(transaction)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except Transaction.DoesNotExist:
+                return Response(
+                    {"detail": "Transaction not found or permission denied."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
 
+        # Fetch a list of transactions
         transactions = Transaction.objects.filter(user=request.user, is_deleted=False)
         paginator = PageNumberPagination()
         paginator.page_size = 5
         paginated_transactions = paginator.paginate_queryset(transactions, request)
 
-        # Serialize the paginated queryset
         serializer = TransactionSerializer(paginated_transactions, many=True)
-
-        # Return the paginated response
         return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
@@ -31,9 +41,9 @@ class TransactionCRUDView(APIView):
         Create a new transaction for the authenticated user.
         Automatically assigns the logged-in user to the transaction.
         """
-
         data = request.data
         data["user"] = request.user.id
+        print(data["user"])
         serializer = TransactionSerializer(data=data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
@@ -45,7 +55,6 @@ class TransactionCRUDView(APIView):
         Update an existing transaction for the authenticated user.
         The user can only update their own transactions.
         """
-
         try:
             transaction = Transaction.objects.get(
                 id=id, user=request.user, is_deleted=False
@@ -65,7 +74,9 @@ class TransactionCRUDView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id=None, **kwargs):
-
+        """
+        Soft delete a transaction for the authenticated user.
+        """
         try:
             transaction = Transaction.objects.get(
                 id=id, user=request.user, is_deleted=False
@@ -113,7 +124,7 @@ class MonthlyReport(APIView):
         total_income = 0
         total_expense = 0
         category_summary = {}
-
+        print(transactions)
         for transaction in transactions:
             if transaction.transaction_type == "income":
                 total_income += transaction.amount
