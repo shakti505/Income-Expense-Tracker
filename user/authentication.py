@@ -8,21 +8,22 @@ from rest_framework.exceptions import APIException
 
 class CustomTokenAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        print("-------Custome Auth Method-------")
+        print("-------Custom Auth Method-------")
         auth_header = request.headers.get("Authorization")
         if not auth_header:
             return None
-
         try:
             token = auth_header.split(" ")[1]
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-
             active_token = ActiveTokens.objects.filter(token=token).first()
 
             if not active_token:
                 raise AuthenticationFailed("Token is invalid or has been logged out")
 
             user = active_token.user
+
+            if not user.is_active:
+                raise AuthenticationFailed("Account is inactive")
 
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Token has expired")
@@ -31,10 +32,7 @@ class CustomTokenAuthentication(BaseAuthentication):
         except Exception as e:
             raise UnauthorizedException(str(e))
 
-        return (
-            user,
-            None,
-        )
+        return (user, None)
 
 
 class UnauthorizedException(APIException):

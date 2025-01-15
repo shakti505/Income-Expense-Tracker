@@ -2,7 +2,7 @@
 
 import uuid
 from django.db import models
-from user.models import User
+from user.models import CustomUser
 from category.models import Category
 
 
@@ -16,7 +16,7 @@ class Transaction(models.Model):
     ]
 
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="transactions"
+        CustomUser, on_delete=models.CASCADE, related_name="transactions"
     )
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)

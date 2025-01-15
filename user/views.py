@@ -1,11 +1,20 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
-from .serializers import UserSerializer, LoginSerializer
-from .models import ActiveTokens
+from .models import ActiveTokens, CustomUser
 from category.models import Category
+from .serializers import (
+    UserSerializer,
+    LoginSerializer,
+    UpdatePasswordSerializer,
+    DeleteUserSerializer,
+    UpdateUserSerializer,
+    TokenHandeling,
+)
 
 
 class UserCreateView(APIView):
@@ -13,165 +22,129 @@ class UserCreateView(APIView):
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    "status": "success",
-                    "message": "User created successfully.",
-                    "data": serializer.data,
-                },
-                status=status.HTTP_201_CREATED,
-            )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(
             {
-                "status": "error",
-                "message": "User creation failed.",
-                "errors": serializer.errors,
+                "message": "User created successfully.",
+                "data": serializer.data,
             },
-            status=status.HTTP_400_BAD_REQUEST,
+            status=status.HTTP_201_CREATED,
         )
 
 
-class GetUpdateDeleteUserView(APIView):
+# View to retrieve all users
+class GetAllUsersView(APIView):
+    """
+    API view to retrieve all users. Only accessible by staff users.
+    """
+
+    permission_classes = [IsAdminUser]
 
     def get(self, request):
-        user = request.user
-        if user.is_deleted:
-            return Response(
-                {
-                    "status": "error",
-                    "message": "User is marked as deleted. Access denied.",
-                },
-                status=status.HTTP_403_FORBIDDEN,
-            )
+        """
+        Retrieve all users.
+        """
+        users = CustomUser.objects.all()
+        serializer = UserSerializer(users, many=True)
 
+        return Response(
+            {
+                "message": "Users retrieved successfully.",
+                "data": serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+# View to retrieve, update, or delete a single user by ID
+class GetUpdateDeleteSingleUserView(APIView):
+    """
+    API view to retrieve, update, or delete a single user by ID.
+    """
+
+    def get_user_object(self, id, requesting_user):
+        """
+        Helper function to get the user object and ensure access control.
+        """
+        user = get_object_or_404(CustomUser, id=id)
+        # Only staff users or the user themselves can access this endpoint
+        if not requesting_user.is_staff and requesting_user != user:
+            raise PermissionDenied(
+                "You do not have permission to access this resource."
+            )
+        return user
+
+    def get(self, request, id):
+        """
+        Retrieve user details by ID.
+        """
+        user = self.get_user_object(id, request.user)
         serializer = UserSerializer(user)
         return Response(
             {
-                "status": "success",
                 "message": "User retrieved successfully.",
                 "data": serializer.data,
             },
             status=status.HTTP_200_OK,
         )
 
-    def delete(self, request):
-        user = request.user
+    def delete(self, request, id):
+        """
+        Soft delete a user by ID.
+        """
+        user = self.get_user_object(id, request.user)
 
-        if user.is_deleted:
-            return Response(
-                {
-                    "status": "error",
-                    "message": "User is already deleted.",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        current_password = request.data.get("password")
-        if not current_password:
-            return Response(
-                {
-                    "status": "error",
-                    "message": "Enter Password",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        if not request.user.check_password(current_password):
-            return Response(
-                {
-                    "status": "error",
-                    "message": "Wrong password",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        if user.is_staff:
-            Category.objects.filter(user=user).update(user=None)
+        serializer = DeleteUserSerializer(
+            data=request.data, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.delete_user()
 
-        TokenHandeling.invalidate_user_tokens(user)
-        refresh_token = request.data.get("refresh_token")
-        TokenHandeling.blacklist_refresh_token(refresh_token)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-        user.is_deleted = True
-        user.save()
+    def patch(self, request, id):
+        """
+        Update user details by ID.
+        """
+        user = self.get_user_object(id, request.user)
+
+        serializer = UpdateUserSerializer(
+            instance=user, data=request.data, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
         return Response(
             {
-                "status": "success",
-                "message": "User deleted (soft-deleted) successfully.",
+                "message": "User details updated successfully.",
+                "data": serializer.data,
             },
             status=status.HTTP_200_OK,
         )
 
-    def put(self, request):
-        password = request.data.get("password")
-        if password:
-            return Response(
-                {
-                    "status": "error",
-                    "message": "Do not Enter Password in this field.",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        user = request.user
-        serializer = UserSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    "status": "success",
-                    "message": "User details updated successfully.",
-                    "data": serializer.data,
-                },
-                status=status.HTTP_200_OK,
-            )
-        return Response(
-            {
-                "status": "error",
-                "message": "User update failed.",
-                "errors": serializer.errors,
-            },
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
 
 class UpdatePasswordUserView(APIView):
-    def patch(self, request):
-        current_password = request.data.get("password")
-        new_password = request.data.get("new_password")
 
-        if not current_password or not new_password:
-            return Response(
-                {
-                    "status": "error",
-                    "message": "Enter both fields",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
+    def patch(self, request, id):
+        """
+        Update password for a user by ID. Only staff can update others' passwords.
+        """
+        if not request.user.is_staff and request.user.id != id:
+            raise PermissionDenied(
+                "You do not have permission to change this user's password."
             )
 
-        if not request.user.check_password(current_password):
-            return Response(
-                {
-                    "status": "error",
-                    "message": "Wrong password",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        user = get_object_or_404(CustomUser, id=id)
 
-        if current_password == new_password:
-            return Response(
-                {
-                    "status": "error",
-                    "message": "New Password can't be the same as the old password",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        request.user.set_password(new_password)
-        request.user.save()
-        TokenHandeling.invalidate_user_tokens(request.user)
+        serializer = UpdatePasswordSerializer(
+            data=request.data, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.update_password()
+
         return Response(
             {
-                "status": "success",
                 "message": "Password updated successfully.",
             },
             status=status.HTTP_200_OK,
@@ -183,92 +156,37 @@ class LoginView(APIView):
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data["user"]
-            access_token = str(AccessToken.for_user(user))
-            refresh_token = str(RefreshToken.for_user(user))
 
-            ActiveTokens.objects.create(user=user, token=access_token)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
 
-            return Response(
-                {
-                    "status": "success",
-                    "message": f"Login successful for {user.username}.",
-                    "access_token": access_token,
-                    "refresh_token": refresh_token,
-                },
-                status=status.HTTP_200_OK,
-            )
-
+        # Generate Tokens
+        access_token = str(AccessToken.for_user(user))
+        refresh_token = str(RefreshToken.for_user(user))
+        ActiveTokens.objects.create(user=user, token=access_token)
         return Response(
             {
-                "status": "error",
-                "message": "Invalid credentials.",
-                "errors": serializer.errors,
+                "message": f"Login successful for {user.username}.",
+                "access_token": access_token,
+                "refresh_token": refresh_token,
             },
-            status=status.HTTP_400_BAD_REQUEST,
+            status=status.HTTP_200_OK,
         )
 
 
 class LogoutView(APIView):
     def post(self, request):
-        try:
-            access_token = request.headers.get("Authorization")
-            access_token = access_token.split(" ")[1]
-
-            TokenHandeling.invalidate_last_active_token(access_token)
-
-            refresh_token = request.data.get("refresh_token")
-            if not refresh_token:
-                return Response(
-                    {
-                        "status": "error",
-                        "message": "Provide refresh token",
-                    },
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-            TokenHandeling.blacklist_refresh_token(refresh_token)
+        access_token = request.headers.get("Authorization", "").split(" ")[1]
+        refresh_token = request.data.get("refresh_token")
+        if not refresh_token:
             return Response(
                 {
-                    "status": "success",
-                    "message": "Logged out successfully.",
-                },
-                status=status.HTTP_200_OK,
-            )
-
-        except Exception as e:
-            return Response(
-                {
-                    "status": "error",
-                    "message": f"Error during logout: {str(e)}",
+                    "message": "Provide refresh token",
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-
-class TokenHandeling:
-    """
-    TokenHandeling class for handling token-related operations.
-    """
-
-    @staticmethod
-    def invalidate_user_tokens(user):
-        """
-        Invalidate all active tokens for a given user.
-        """
-        active_tokens = ActiveTokens.objects.filter(user=user)
-        for token_obj in active_tokens:
-            token_obj.delete()
-
-    @staticmethod
-    def invalidate_last_active_token(access_token):
-        ActiveTokens.objects.filter(token=access_token).delete()
-
-    @staticmethod
-    def blacklist_refresh_token(refresh_token):
-        """Blacklist a given refresh token."""
-        try:
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-        except Exception as e:
-            raise Exception(f"Error blacklisting refresh token: {str(e)}")
+        TokenHandeling.invalidate_last_active_token(access_token)
+        TokenHandeling.blacklist_refresh_token(refresh_token)
+        return Response(
+            status=status.HTTP_204_NO_CONTENT,
+        )

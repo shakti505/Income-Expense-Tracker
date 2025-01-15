@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from datetime import datetime, timedelta
 import calendar
-from .models import Transaction, User
+from .models import Transaction
 from .serializers import TransactionSerializer
 
 
@@ -192,7 +192,9 @@ class MonthlyReport(APIView):
         today = datetime.today()
         year = today.year
         month = today.month
-        _, num_days = calendar.monthrange(year, month)
+        _, num_days = calendar.monthrange(
+            year, month
+        )  # To get number of days in this month
 
         start_of_month = today.replace(day=1)
         end_of_month = today.replace(day=num_days)

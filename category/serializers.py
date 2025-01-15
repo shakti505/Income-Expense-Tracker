@@ -30,7 +30,6 @@ class CategorySerializer(serializers.ModelSerializer):
                     "A default category with this name already exists. Normal users cannot create new categories with this name."
                 )
 
-        # If the user is a staff member, check if the category already exists as a default category
         if user.is_staff:
             if Category.objects.filter(
                 name__iexact=value, is_deleted=False, is_default=True

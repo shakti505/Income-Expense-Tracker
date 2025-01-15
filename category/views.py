@@ -21,23 +21,23 @@ class CategoryCRUDView(APIView):
                     category = Category.objects.get(
                         id=id,
                         is_deleted=False,
-                    )  # No user filter here for default category
+                    )  #
 
                     # Check if the category is deleted or not
-                    if category.is_deleted:
+                    if category.is_deleted:  # bad ( not should )
                         return Response(
                             {
                                 "status": "error",
                                 "message": "This category has been deleted and is no longer available.",
                             },
-                            status=status.HTTP_410_GONE,
+                            status=status.HTTP_410_GONE,  # Change to 404
                         )
 
                     # If it's not a staff user, check if the category is either their own or default
                     if (
                         not request.user.is_staff
                         and category.user != request.user
-                        and not category.is_default
+                        and not category.is_default  # change very ugly code
                     ):
                         return Response(
                             {
@@ -74,7 +74,7 @@ class CategoryCRUDView(APIView):
                 user=request.user, is_deleted=False
             ) | Category.objects.filter(is_default=True, is_deleted=False)
 
-        if request.user.is_deleted and not request.user.is_staff:
+        if not request.user.is_active and not request.user.is_staff:
             return Response(
                 {
                     "status": "error",
@@ -99,7 +99,6 @@ class CategoryCRUDView(APIView):
     def post(self, request):
         """Create a new category for the authenticated user."""
         data = request.data
-
         # Allow staff to create categories for themselves or other users
         if request.user.is_staff and "user" in data:
             user_id = data.get("user")
