@@ -1,12 +1,13 @@
 from django.urls import path
-from transaction.views import MonthlyReport
+
+from transaction.views import GenerateMonthlyReportView
 from .views import (
     UserCreateView,
     LoginView,
     LogoutView,
-    GetUpdateDeleteSingleUserView,
-    UpdatePasswordUserView,
-    GetAllUsersView,
+    UserProfileView,
+    UpdatePasswordView,
+    UserListView,
 )
 
 urlpatterns = [
@@ -15,12 +16,14 @@ urlpatterns = [
     path("auth/logout/", LogoutView.as_view(), name="user-logout"),
     path(
         "users/update-password/<uuid:id>/",
-        UpdatePasswordUserView.as_view(),
+        UpdatePasswordView.as_view(),
         name="update-password",
     ),
+    path("users/<uuid:id>/", UserProfileView.as_view(), name="user-detail"),
+    path("users/", UserListView.as_view(), name="get_all_users"),
     path(
-        "users/<uuid:id>/", GetUpdateDeleteSingleUserView.as_view(), name="user-detail"
+        "users/monthly-report/",
+        GenerateMonthlyReportView.as_view(),
+        name="monthly-report",
     ),
-    path("users/", GetAllUsersView.as_view(), name="get_all_users"),
-    path("users/monthly-report/", MonthlyReport.as_view(), name="monthly-report"),
 ]

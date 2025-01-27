@@ -1,24 +1,16 @@
 import logging
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from rest_framework.exceptions import (
-    ValidationError,
-    AuthenticationFailed,
-    PermissionDenied,
-)
+from rest_framework.exceptions import ValidationError, AuthenticationFailed
 from .models import CustomUser, ActiveTokens
 from category.models import Category
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from utils.token import TokenHandler
+from django.contrib.auth.password_validation import validate_password
 
-# Set up logging
 logger = logging.getLogger(__name__)
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """
-    Serializes user data for registration and viewing.
-    """
-
     class Meta:
         model = CustomUser
         fields = (
@@ -29,35 +21,33 @@ class UserSerializer(serializers.ModelSerializer):
             "name",
             "created_at",
             "updated_at",
+            "is_active",
             "is_staff",
         )
         extra_kwargs = {
             "password": {"write_only": True},
-            "is_staff": {"read_only": "True"},
+            "id": {"read_only": True},
+            "created_at": {"read_only": True},
+            "updated_at": {"read_only": True},
+            "is_active": {"read_only": True},
+            "is_staff": {"read_only": True},
         }
 
-    def create(self, validated_data):
-        """
-        Create a new user with a hashed password.
-        """
+    def validate_password(self, value):
+        validate_password(value)
+        return value
 
+    def create(self, validated_data):
         user = CustomUser.objects.create_user(**validated_data)
         logger.info(f"User {user.username} created successfully.")
         return user
 
 
 class LoginSerializer(serializers.Serializer):
-    """
-    Validates login credentials and returns the authenticated user.
-    """
-
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        """
-        Validate the provided username and password against the database.
-        """
         username = data.get("username")
         password = data.get("password")
 
@@ -65,96 +55,103 @@ class LoginSerializer(serializers.Serializer):
         if not user:
             raise AuthenticationFailed("Invalid credentials")
 
+        if not user.is_active:
+            raise AuthenticationFailed("Account is inactive")
+
         logger.info(f"User {user.username} logged in successfully.")
-        return {"user": user}
+        data["user"] = user
+        return data
+
+
+class UpdatePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True, required=False)
+    new_password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        user = self.context["user"]
+        request_user = self.context["request"].user
+
+        # If the request user is not staff, validate current password
+        if not request_user.is_staff:
+            if "current_password" not in data:
+                raise ValidationError("Current password is required.")
+            if not user.check_password(data["current_password"]):
+                raise ValidationError("Current password is incorrect.")
+
+        # Validate new passwords
+        if data["new_password"] != data["confirm_password"]:
+            raise ValidationError("New passwords do not match.")
+
+        validate_password(data["new_password"], user)
+
+        # Prevent reusing the current password
+        if user.check_password(data["new_password"]):
+            raise ValidationError(
+                "New password cannot be the same as the current password."
+            )
+
+        return data
+
+    def update_password(self):
+        user = self.context["user"]
+        user.set_password(self.validated_data["new_password"])
+        user.save()
+
+        # Invalidate all other tokens except the current one
+        ActiveTokens.objects.filter(user=user).exclude(
+            token=self.context["request"].auth
+        ).delete()
+
+        logger.info(f"User {user.username} updated password successfully.")
 
 
 class DeleteUserSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
-    refresh_token = serializers.CharField(write_only=True)
 
     def validate(self, data):
         user = self.context["request"].user
+
         if not user.is_active:
-            raise ValidationError("User is already deleted.")
+            raise ValidationError("User account is already deleted")
+
         if not user.check_password(data["password"]):
-            raise ValidationError("Wrong password.")
+            raise ValidationError("Incorrect password")
+
         return data
 
     def delete_user(self):
         user = self.context["request"].user
-        if user.is_staff:
-            # Remove user from categories they own or are associated with
-            Category.objects.filter(user=user).update(user=None)
-        TokenHandeling.invalidate_user_tokens(user)
-        TokenHandeling.blacklist_refresh_token(self.validated_data["refresh_token"])
+
+        # Soft delete user
         user.is_active = False
         user.save()
+
+        # Optional: Update related records
+        if user.is_staff:
+            Category.objects.filter(user=user).update(user=None)
+
+        # Invalidate all tokens
+        ActiveTokens.objects.filter(user=user).delete()
+
         logger.info(f"User {user.username} soft-deleted successfully.")
 
 
 class UpdateUserSerializer(serializers.ModelSerializer):
-    """
-    Serializer for updating user details.
-    """
-
     class Meta:
         model = CustomUser
-        fields = ("username", "email", "name")
+        fields = ["username", "email", "name"]
 
-    def validate(self, attrs):
-        if "password" in attrs:
-            raise ValidationError("Do not include password in this field.")
-        return attrs
-
-
-class UpdatePasswordSerializer(serializers.Serializer):
-    password = serializers.CharField(write_only=True)
-    new_password = serializers.CharField(write_only=True)
-
-    def validate(self, data):
+    def validate_username(self, value):
+        # Ensure username is unique, excluding current user
         user = self.context["request"].user
-        if not user.check_password(data["password"]):
-            raise ValidationError("Wrong password.")
-        if data["password"] == data["new_password"]:
-            raise ValidationError(
-                "New password cannot be the same as the old password."
-            )
-        return data
+        if CustomUser.objects.exclude(pk=user.pk).filter(username=value).exists():
+            raise ValidationError("Username already exists")
+        return value
 
-    def update_password(self):
+    def validate_email(self, value):
+        # Ensure email is unique, excluding current user
         user = self.context["request"].user
-        user.set_password(self.validated_data["new_password"])
-        user.save()
-        TokenHandeling.invalidate_user_tokens(user)
-        logger.info(f"User {user.username} updated their password successfully.")
-
-
-class TokenHandeling:
-    """
-    TokenHandeling class for handling token-related operations.
-    """
-
-    @staticmethod
-    def invalidate_user_tokens(user):
-        """
-        Invalidate all active tokens for a given user.
-        """
-        ActiveTokens.objects.filter(user=user).delete()
-        logger.info(f"All tokens for user {user.username} invalidated.")
-
-    @staticmethod
-    def invalidate_last_active_token(access_token):
-        ActiveTokens.objects.filter(token=access_token).delete()
-        logger.info(f"Token {access_token} invalidated.")
-
-    @staticmethod
-    def blacklist_refresh_token(refresh_token):
-        """Blacklist a given refresh token."""
-        try:
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-            logger.info(f"Refresh token {refresh_token} blacklisted.")
-        except Exception as e:
-            logger.error(f"Error blacklisting refresh token {refresh_token}: {str(e)}")
-            raise Exception(f"Error blacklisting refresh token: {str(e)}")
+        if CustomUser.objects.exclude(pk=user.pk).filter(email=value).exists():
+            raise ValidationError("Email already exists")
+        return value

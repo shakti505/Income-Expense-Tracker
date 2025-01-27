@@ -1,71 +1,54 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.pagination import PageNumberPagination
-from datetime import datetime, timedelta
+from datetime import datetime
 import calendar
 from .models import Transaction
 from .serializers import TransactionSerializer
+from utils.pagination import CustomPageNumberPagination
+from utils.permissions import IsStaffOrOwner
 
 
-class TransactionCRUDView(APIView):
-    def get(self, request, id=None):
+class BaseTransactionView(APIView):
+    """
+    Base view for common transaction-related functionality.
+    """
+
+    permission_classes = [IsStaffOrOwner]
+
+    def get_transaction(self, transaction_id):
         """
-        Staff members can view all transactions, regular users can only see their own transactions.
+        Retrieve a transaction by ID.
         """
-        if request.user.is_staff:
-            if id:
-                try:
-                    transaction = Transaction.objects.get(id=id, is_deleted=False)
-                    serializer = TransactionSerializer(transaction)
-                    return Response(
-                        {
-                            "status": "success",
-                            "message": "Transaction retrieved successfully.",
-                            "transaction": serializer.data,
-                        },
-                        status=status.HTTP_200_OK,
-                    )
-                except Transaction.DoesNotExist:
-                    return Response(
-                        {
-                            "status": "error",
-                            "message": "Transaction not found.",
-                        },
-                        status=status.HTTP_404_NOT_FOUND,
-                    )
-            transactions = Transaction.objects.filter(is_deleted=False)
-        else:
-            if id:
-                try:
-                    transaction = Transaction.objects.get(
-                        id=id, user=request.user, is_deleted=False
-                    )
-                    serializer = TransactionSerializer(transaction)
-                    return Response(
-                        {
-                            "status": "success",
-                            "message": "Transaction retrieved successfully.",
-                            "transaction": serializer.data,
-                        },
-                        status=status.HTTP_200_OK,
-                    )
-                except Transaction.DoesNotExist:
-                    return Response(
-                        {
-                            "status": "error",
-                            "message": "Transaction not found or permission denied.",
-                        },
-                        status=status.HTTP_404_NOT_FOUND,
-                    )
-            transactions = Transaction.objects.filter(
-                user=request.user, is_deleted=False
-            )
+        try:
+            return Transaction.objects.get(id=transaction_id, is_deleted=False)
+        except Transaction.DoesNotExist:
+            return None
 
-        paginator = PageNumberPagination()
-        paginator.page_size = 5
+    def get_transactions_for_user(self, user):
+        """
+        Retrieve transactions based on user role.
+        """
+        if user.is_staff:
+            return Transaction.objects.filter(is_deleted=False)
+        return Transaction.objects.filter(user=user, is_deleted=False)
+
+
+class ListTransactionsView(BaseTransactionView):
+    """
+    View for listing transactions.
+    Staff can view all transactions, while normal users can only view their own.
+    """
+
+    pagination_class = CustomPageNumberPagination
+
+    def get(self, request):
+        """
+        Retrieve a paginated list of transactions.
+        """
+        transactions = self.get_transactions_for_user(request.user)
+        paginator = self.pagination_class()
         paginated_transactions = paginator.paginate_queryset(transactions, request)
-
         serializer = TransactionSerializer(paginated_transactions, many=True)
         return paginator.get_paginated_response(
             {
@@ -75,53 +58,67 @@ class TransactionCRUDView(APIView):
             }
         )
 
+
+class CreateTransactionView(BaseTransactionView):
+    """
+    View for creating transactions.
+    Staff users can create transactions for any user.
+    """
+
     def post(self, request):
         """
-        Staff users can't create transactions for themselves. Normal users can create their own transactions.
+        Create a new transaction.
         """
-        if request.user.is_staff:
+        data = request.data
+        if not request.user.is_staff:
+            # Normal users can only create transactions for themselves
+            data["user"] = request.user.id
+        else:
+            # Staff users can create transactions for any user
+            if "user" not in data:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "User ID is required for staff users.",
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        serializer = TransactionSerializer(data=data, context={"request": request})
+
+        if not serializer.is_valid():
             return Response(
                 {
                     "status": "error",
-                    "message": "Staff users cannot create transactions for their own accounts.",
+                    "message": "Transaction creation failed.",
+                    "errors": serializer.errors,
                 },
-                status=status.HTTP_403_FORBIDDEN,
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
-        data = request.data
-        data["user"] = request.user.id
-        serializer = TransactionSerializer(data=data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    "status": "success",
-                    "message": "Transaction created successfully.",
-                    "transaction": serializer.data,
-                },
-                status=status.HTTP_201_CREATED,
-            )
+        serializer.save()
         return Response(
             {
-                "status": "error",
-                "message": "Transaction creation failed.",
-                "errors": serializer.errors,
+                "status": "success",
+                "message": "Transaction created successfully.",
+                "transaction": serializer.data,
             },
-            status=status.HTTP_400_BAD_REQUEST,
+            status=status.HTTP_201_CREATED,
         )
 
-    def put(self, request, id=None):
+
+class UpdateDeleteTransactionView(BaseTransactionView):
+    """
+    View for updating and deleting transactions.
+    Staff users can update or delete any transaction.
+    """
+
+    def put(self, request, transaction_id):
         """
-        Staff users can update any transaction, while regular users can only update their own transactions.
+        Update an existing transaction.
         """
-        try:
-            if request.user.is_staff:
-                transaction = Transaction.objects.get(id=id, is_deleted=False)
-            else:
-                transaction = Transaction.objects.get(
-                    id=id, user=request.user, is_deleted=False
-                )
-        except Transaction.DoesNotExist:
+        transaction = self.get_transaction(transaction_id)
+        if not transaction:
             return Response(
                 {
                     "status": "error",
@@ -133,37 +130,33 @@ class TransactionCRUDView(APIView):
         serializer = TransactionSerializer(
             transaction, data=request.data, partial=True, context={"request": request}
         )
-        if serializer.is_valid():
-            serializer.save()
+
+        if not serializer.is_valid():
             return Response(
                 {
-                    "status": "success",
-                    "message": "Transaction updated successfully.",
-                    "transaction": serializer.data,
+                    "status": "error",
+                    "message": "Transaction update failed.",
+                    "errors": serializer.errors,
                 },
-                status=status.HTTP_200_OK,
+                status=status.HTTP_400_BAD_REQUEST,
             )
+
+        serializer.save()
         return Response(
             {
-                "status": "error",
-                "message": "Transaction update failed.",
-                "errors": serializer.errors,
+                "status": "success",
+                "message": "Transaction updated successfully.",
+                "transaction": serializer.data,
             },
-            status=status.HTTP_400_BAD_REQUEST,
+            status=status.HTTP_200_OK,
         )
 
-    def delete(self, request, id=None):
+    def delete(self, request, transaction_id):
         """
-        Staff members can delete any transaction, while regular users can only delete their own transactions.
+        Soft delete a transaction.
         """
-        try:
-            if request.user.is_staff:
-                transaction = Transaction.objects.get(id=id, is_deleted=False)
-            else:
-                transaction = Transaction.objects.get(
-                    id=id, user=request.user, is_deleted=False
-                )
-        except Transaction.DoesNotExist:
+        transaction = self.get_transaction(transaction_id)
+        if not transaction:
             return Response(
                 {
                     "status": "error",
@@ -183,18 +176,19 @@ class TransactionCRUDView(APIView):
         )
 
 
-class MonthlyReport(APIView):
+class GenerateMonthlyReportView(BaseTransactionView):
+    """
+    View for generating a monthly financial report.
+    """
+
     def get(self, request):
         """
-        Generate a monthly financial report for  user, showing income, expenses, and balance.
+        Generate a monthly financial report for the user.
         """
-
         today = datetime.today()
         year = today.year
         month = today.month
-        _, num_days = calendar.monthrange(
-            year, month
-        )  # To get number of days in this month
+        _, num_days = calendar.monthrange(year, month)
 
         start_of_month = today.replace(day=1)
         end_of_month = today.replace(day=num_days)
@@ -205,24 +199,16 @@ class MonthlyReport(APIView):
             is_deleted=False,
         )
 
-        total_income = 0
-        total_expense = 0
-        category_summary = {}
+        total_credit = sum(t.amount for t in transactions if t.type == "credit")
+        total_debit = sum(t.amount for t in transactions if t.type == "debit")
+        total_balance = total_credit - total_expense
 
-        for transaction in transactions:
-            if transaction.transaction_type == "income":
-                total_income += transaction.amount
-            elif transaction.transaction_type == "expense":
-                total_expense += transaction.amount
-
-        total_balance = total_income - total_expense
-
-        data = {
-            "status": "success",
-            "message": "Monthly report generated successfully.",
-            "total_income": total_income,
-            "total_expense": total_expense,
-            "total_balance": total_balance,
-        }
-
-        return Response(data)
+        return Response(
+            {
+                "status": "success",
+                "message": "Monthly report generated successfully.",
+                "total_credit": total_credit,
+                "total_debit": total_debit,
+                "total_balance": total_balance,
+            }
+        )
