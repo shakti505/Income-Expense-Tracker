@@ -4,6 +4,7 @@ from .views import (
     CreateTransactionView,
     UpdateDeleteTransactionView,
     GenerateMonthlyReportView,
+    
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
         GenerateMonthlyReportView.as_view(),
         name="generate-monthly-report",
     ),
+  
 ]

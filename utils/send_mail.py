@@ -2,14 +2,12 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from django.conf import settings
 from expense_tracker.secrets import SENDGRID_API_KEY
-reset_link = "https://shaktisingh.tech"
-def send_email(to_email, subject, ):
+
+def send_email(to_email, reset_link):
     """Sends an email using SendGrid API"""
     message = Mail(
-        from_email='developer.shaktisingh@gmail.com',  # Must be verified in SendGrid
+        from_email='shakti@gkmit.co',  # Must be verified in SendGrid
         to_emails=to_email,
-        subject=subject,
-      
     )
     dynamic_template_data = {
         "reset_link": reset_link

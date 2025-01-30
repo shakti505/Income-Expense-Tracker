@@ -156,3 +156,18 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         if CustomUser.objects.exclude(pk=user.pk).filter(email=value).exists():
             raise ValidationError("Email already exists")
         return value
+
+
+# accounts/serializers.py
+
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        try:
+            user = CustomUser.objects.get(email=value)
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("No user found with this email address.")
+        return value

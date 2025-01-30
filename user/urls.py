@@ -8,6 +8,8 @@ from .views import (
     UserProfileView,
     UpdatePasswordView,
     UserListView,
+    PasswordResetConfirmView,
+    PasswordResetRequestView
 )
 
 urlpatterns = [
@@ -25,5 +27,15 @@ urlpatterns = [
         "users/monthly-report/",
         GenerateMonthlyReportView.as_view(),
         name="monthly-report",
+    ),
+    path(
+        "auth/password-reset/",
+        PasswordResetRequestView.as_view(),
+        name="password-reset",
+    ),
+    path(
+        "auth/password-reset/confirm/<str:uidb64>/<str:token>/",
+        PasswordResetConfirmView.as_view(),
+        name="password-reset-confirm",
     ),
 ]

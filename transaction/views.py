@@ -62,7 +62,6 @@ class ListTransactionsView(BaseTransactionView):
             
         )
 
-
 class CreateTransactionView(BaseTransactionView):
     """
     View for creating transactions.
