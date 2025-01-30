@@ -7,7 +7,13 @@ from .models import Transaction
 from .serializers import TransactionSerializer
 from utils.pagination import CustomPageNumberPagination
 from utils.permissions import IsStaffOrOwner
-
+from utils.responses import (
+    validation_error_response,
+    success_response,
+    success_single_response,
+    not_found_error_response,
+    permission_error_response,
+)
 
 class BaseTransactionView(APIView):
     """
@@ -50,12 +56,10 @@ class ListTransactionsView(BaseTransactionView):
         paginator = self.pagination_class()
         paginated_transactions = paginator.paginate_queryset(transactions, request)
         serializer = TransactionSerializer(paginated_transactions, many=True)
-        return paginator.get_paginated_response(
-            {
-                "status": "success",
-                "message": "Transactions retrieved successfully.",
-                "transactions": serializer.data,
-            }
+        return success_response(
+            
+                serializer.data,
+            
         )
 
 
@@ -78,7 +82,7 @@ class CreateTransactionView(BaseTransactionView):
             if "user" not in data:
                 return Response(
                     {
-                        "status": "error",
+                       
                         "message": "User ID is required for staff users.",
                     },
                     status=status.HTTP_400_BAD_REQUEST,
@@ -190,6 +194,7 @@ class GenerateMonthlyReportView(BaseTransactionView):
         month = today.month
         _, num_days = calendar.monthrange(year, month)
 
+
         start_of_month = today.replace(day=1)
         end_of_month = today.replace(day=num_days)
 
@@ -201,7 +206,8 @@ class GenerateMonthlyReportView(BaseTransactionView):
 
         total_credit = sum(t.amount for t in transactions if t.type == "credit")
         total_debit = sum(t.amount for t in transactions if t.type == "debit")
-        total_balance = total_credit - total_expense
+        total_balance = total_credit - total_debit
+        
 
         return Response(
             {

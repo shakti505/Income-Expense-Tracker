@@ -32,6 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
             "is_active": {"read_only": True},
             "is_staff": {"read_only": True},
         }
+        
 
     def validate_password(self, value):
         validate_password(value)
