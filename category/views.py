@@ -12,10 +12,8 @@ from utils.responses import (
     success_single_response,
     not_found_error_response,
     permission_error_response,
+    success_no_content_response
 )
-
-
-
 class BaseCategoryView(APIView):
     """Base view with common category operations."""
     
@@ -28,7 +26,6 @@ class BaseCategoryView(APIView):
             
         if not user.is_staff and category.user != user:
             return permission_error_response("You do not have permission to access this category")
-            
         return category
 
 
@@ -40,7 +37,10 @@ class CategoryListView(BaseCategoryView, CustomPageNumberPagination):
     def get(self, request):
         """List all categories for the authenticated user or all categories for staff."""
         categories = self._get_categories_for_user(request.user)
+        category_type = self.request.query_params.get("type")
 
+        if category_type in ["debit", "credit"]:
+            categories = categories.filter(type=category_type)
         
         # Handle pagination
         paginated_categories = self.paginate_queryset(categories, request)
@@ -62,13 +62,13 @@ class CategoryListView(BaseCategoryView, CustomPageNumberPagination):
     def _get_categories_for_user(self, user):
         """Get categories based on user role."""
         if user.is_staff:
-            return Category.objects.filter(is_deleted=False)
+            return Category.objects.filter()
             
         return Category.objects.filter(
             user=user, 
             is_deleted=False
         ) | Category.objects.filter(
-            is_default=True, 
+            is_predefined=True, 
             is_deleted=False
         )
 
@@ -112,7 +112,7 @@ class CategoryDetailView(BaseCategoryView):
         category.is_deleted = True
         category.save()
         
-        return success_response(
-            {"message": "Category deleted successfully"},
-            status_code=status.HTTP_200_OK
+        return success_no_content_response(
+            
+         
         )
