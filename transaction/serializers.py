@@ -1,79 +1,54 @@
 from rest_framework import serializers
+from .models import Transaction
+from budget.models import Budget
 from rest_framework.exceptions import ValidationError
-from .models import Transaction, Category
-
+from django.utils import timezone
+from django.db.models import F
+from django.db import transaction
 
 class TransactionSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the Transaction model.
-    Handles validation, creation, and updating of transactions.
-    """
-
     class Meta:
         model = Transaction
-        exclude = ["is_deleted"]  # Exclude the `is_deleted` field from serialization
+        fields = "__all__"
 
-    def validate_category(self, category):
-        """
-        Validate the category to ensure it belongs to the user or is a default category.
-        Also ensures the category is not deleted.
-        """
-        user = self.context["request"].user
+    def validate_user(self, value):
+        user = self.context['request'].user
+        if user.is_staff and value == user:
+            raise serializers.ValidationError("Staff users cannot create transactions for themselves.")
+        if not user.is_staff and value != user:
+            raise serializers.ValidationError(" Staff users cannot create transactions for themselves")
+        return value
+    def validate_amount(self, value):
+        """Validate the budget amount"""
+        if value <= 0:
+            raise serializers.ValidationError("Amount must be greater than 0")
+        if value > 999999999.99:
+            raise serializers.ValidationError("Amount exceeds maximum allowed value")
+        return value
+    def validate_category(self, value):
+        """Validate the category"""
+        user = self.context['request'].user
+        print(user)
+        print(value.user)
+        if value.user != user or value.is_deleted:
+            raise serializers.ValidationError("Category does not belong to the user")
 
-        # Check if the category belongs to the user or is a default category
-        if category and category.user != user and not category.is_default:
-            raise ValidationError(
-                {
-                    "category": "You can only use your own categories or default categories."
-                }
-            )
-
-        # Check if the category is deleted
-        if category and category.is_deleted:
-            raise ValidationError(
-                {"category": "This category is no longer available (deleted)."}
-            )
-
-        return category
-
+        if not value.type ==  self.initial_data['type']:
+            raise serializers.ValidationError("Cannot create a debit transaction for a credit category")
+        if value.is_deleted:
+            raise serializers.ValidationError("Category is deleted")
+        return value
     def validate(self, data):
-        """
-        Validate the transaction data before creation or update.
-        """
-        user = self.context["request"].user
+        user = data.get('user')
+        category = data.get('category')
 
-        # Ensure normal users cannot create or update transactions for other users
-        if not user.is_staff and "user" in data and data["user"] != user:
-            raise ValidationError(
-                {
-                    "user": "You do not have permission to create or update transactions for other users."
-                }
-            )
+        # Manually passed date or current date if not provided
+        transaction_date = data.get('date', timezone.now().date())
+
+        print(transaction_date)
+        # Find user's budget for this category within the date range
+      
+
+    
 
         return data
-
-    def create(self, validated_data):
-        """
-        Create a new transaction.
-        """
-        user = self.context["request"].user
-
-        # If the user is not staff, ensure the transaction is created for themselves
-        if not user.is_staff:
-            validated_data["user"] = user
-
-        return super().create(validated_data)
-
-    def update(self, instance, validated_data):
-        """
-        Update an existing transaction.
-        """
-        user = self.context["request"].user
-
-        # If the user is not staff, ensure they can only update their own transactions
-        if not user.is_staff and instance.user != user:
-            raise ValidationError(
-                {"user": "You do not have permission to update this transaction."}
-            )
-
-        return super().update(instance, validated_data)
