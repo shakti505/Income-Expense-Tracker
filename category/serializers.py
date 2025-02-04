@@ -9,18 +9,18 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ["id", "name", "user", "is_predefined", "is_deleted","type"]
-        read_only_fields = ["id", "is_predefined", "is_deleted"]
+        fields = ["id", "name", "user", "is_predefined","type"]
+        read_only_fields = ["id", "is_predefined", ]
 
     def __init__(self, *args, **kwargs):
         # Get the request object from the context
-        request = kwargs.get("context", {}).get("request", None)
+        request = kwargs.get("context", {}).get("request")
+
 
         # If there's no request, proceed as usual
         if request:
             # Check HTTP method
-            if request.method == "PUT":
-                # Custom logic for POST requests
+            if request.method == "PATCH":
                 self.fields["user"].read_only = True
                 self.fields["type"].read_only = True
 
@@ -28,34 +28,38 @@ class CategorySerializer(serializers.ModelSerializer):
         super().__init__(*args, **kwargs)
 
     def validate_user(self, user):
-        """Validate that the user field is valid and can only be set by staff users during creation."""
+        """Custom validation for user: Ensure the user is active, 
+        normal users can only create categories for themselves, 
+        and staff cannot create categories for other staff."""
         request = self.context.get("request")
-        print(user)
 
-        if not user:
-            raise serializers.ValidationError("The user field cannot be blank.")
-        if user:
-            if not user.is_active:
-                raise serializers.ValidationError("The specified user is not active.")
-        if not request.user.is_staff:
-            if user != request.user:
-                raise PermissionDenied("Normal users can only create categories for themselves.")
-        
-        if not user.is_active:
-            raise serializers.ValidationError("The specified user does not exists.")
+        # Ensure the user exists and is active
+        if not user or not user.is_active:
+            raise serializers.ValidationError("The specified user is either invalid or inactive.")
+
+        # Normal users can only create categories for themselves
+        if not request.user.is_staff and user != request.user:
+            raise PermissionDenied("Normal users can only create categories for themselves.")
+
+        # Staff users can create categories for themselves, but not for other staff users
+        if request.user.is_staff and user != request.user:
+            raise PermissionDenied("Staff users cannot create categories for other staff users.")
+
         return user
 
-    def _validate_name(self, value, user):
+
+
+    def _validate_name(self, value, user, type):
         """Validate that the category name is unique for the determined user."""
         request = self.context.get("request")
-        type=self.initial_data.get("type")
+        print(type)
 
         # Check if a category with the same name exists for the determined user
         if (
             Category.objects.filter(
                 name__iexact=value, user=user, is_deleted=False, type=type
             ).exists()
-            | Category.objects.filter(
+            or Category.objects.filter(
                 name__iexact=value, is_deleted=False, is_predefined=True, type=type
             ).exists()
         ):
@@ -65,23 +69,18 @@ class CategorySerializer(serializers.ModelSerializer):
                 }
             )
 
-        # Save the determined user in the serializer context for later use
-        # self.context["determined_user"] = user
 
         return value
 
     def validate(self, data):
         """Ensure the user field is handled correctly during creation and updates."""
         request = self.context.get("request")
-        
-
         # For creation
         if self.instance is None:
             # If the user is not staff, force the user field to be the authenticated user
             user = data.get("user", request.user)
-
             if "name" in data:
-                data["name"] = self._validate_name(data["name"], user)
+                data["name"] = self._validate_name(data["name"], user, data.get('type'))
 
             data["user"] = user
             data["is_predefined"] = user.is_staff
@@ -90,7 +89,7 @@ class CategorySerializer(serializers.ModelSerializer):
         else:
             # Prevent staff users from updating the user field
             if "name" in data:
-                data["name"] = self._validate_name(data["name"], self.instance.user)
+                data["name"] = self._validate_name(data["name"], self.instance.user, self.instance.type)
 
         return data
 
