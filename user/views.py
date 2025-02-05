@@ -1,4 +1,3 @@
-
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
@@ -9,7 +8,7 @@ from utils.responses import (
     success_response,
     validation_error_response,
     success_single_response,
-    not_found_error_response
+    not_found_error_response,
 )
 from uuid import UUID
 from utils.token import TokenHandler
@@ -27,7 +26,6 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from .serializers import PasswordResetRequestSerializer
 from django.utils.http import urlsafe_base64_decode
-
 
 
 class BaseUserView:
@@ -54,10 +52,7 @@ class UserCreateView(APIView):
             return validation_error_response(serializer.errors)
         user = serializer.save()
         tokens = TokenHandler.generate_tokens_for_user(user)
-        response_data = {
-            "user": serializer.data,
-            "tokens": tokens
-        }
+        response_data = {"user": serializer.data, "tokens": tokens}
         return success_response(response_data, status_code=status.HTTP_201_CREATED)
 
 
@@ -70,10 +65,7 @@ class LoginView(APIView):
             return validation_error_response(serializer.errors)
         user = serializer.validated_data["user"]
         tokens = TokenHandler.generate_tokens_for_user(user)
-        response_data = {
-            "user": UserSerializer(user).data,
-            "tokens": tokens
-        }
+        response_data = {"user": UserSerializer(user).data, "tokens": tokens}
         return success_response(response_data)
 
 
@@ -82,7 +74,9 @@ class LogoutView(APIView):
 
     def post(self, request):
         TokenHandler.invalidate_user_session(request.user, request.auth)
-        return success_response({"message": "Logged out successfully"}, status_code=status.HTTP_200_OK)
+        return success_response(
+            {"message": "Logged out successfully"}, status_code=status.HTTP_200_OK
+        )
 
 
 class UserListView(APIView):
@@ -111,10 +105,7 @@ class UserProfileView(BaseUserView, TokenAuthorizationMixin, APIView):
             return user
         self.check_object_permissions(request, user)
         serializer = UpdateUserSerializer(
-            instance=user,
-            data=request.data,
-            context={"request": request},
-            partial=True
+            instance=user, data=request.data, context={"request": request}, partial=True
         )
         if not serializer.is_valid():
             return validation_error_response(serializer.errors)
@@ -128,15 +119,13 @@ class UserProfileView(BaseUserView, TokenAuthorizationMixin, APIView):
         self.check_object_permissions(request, user)
 
         serializer = DeleteUserSerializer(
-            data=request.data,
-            context={"request": request}
+            data=request.data, context={"request": request}
         )
         if not serializer.is_valid():
             return validation_error_response(serializer.errors)
         serializer.delete_user()
         return success_response(
-            {"message": "User account deleted"},
-            status_code=status.HTTP_200_OK
+            {"message": "User account deleted"}, status_code=status.HTTP_200_OK
         )
 
 
@@ -149,49 +138,57 @@ class UpdatePasswordView(BaseUserView, APIView):
             return user
         self.check_object_permissions(request, user)
         serializer = UpdatePasswordSerializer(
-            data=request.data,
-            context={"request": request, "user": user}
+            data=request.data, context={"request": request, "user": user}
         )
         if not serializer.is_valid():
             return validation_error_response(serializer.errors)
         serializer.update_password()
         return success_response({"message": "Password updated successfully"})
-    
-
 
 
 class PasswordResetRequestView(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         # Use your custom serializer
         serializer = PasswordResetRequestSerializer(data=request.data)
-        
+
         if serializer.is_valid():
-            email = serializer.validated_data['email']
+            email = serializer.validated_data["email"]
             try:
                 user = CustomUser.objects.get(email=email)
+                print(user)
+                print(email)
             except CustomUser.DoesNotExist:
-                return not_found_error_response(detail="User with this email not found.")
-            
+                return not_found_error_response(
+                    detail="User with this email not found."
+                )
+
             # Generate token
             token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_encode(str(user.pk).encode()) # Use UUID bytes for encoding
+            uid = urlsafe_base64_encode(
+                str(user.pk).encode()
+            )  # Use UUID bytes for encoding
 
             # Generate reset URL
-            reset_link = f'http://localhost:8000/api/auth/password-reset/confirm/{uid}/{token}/'
-
+            reset_link = (
+                f"http://localhost:8000/api/auth/password-reset/confirm/{uid}/{token}/"
+            )
+            print("EHllo")
+            print(reset_link)
             # Send email
             send_mail.delay(
                 [email],
-                reset_link,)
-            return success_response(data={'message': 'Password reset email sent.'})
+                reset_link,
+            )
+            return success_response(data={"message": "Password reset email sent."})
 
         return validation_error_response(serializer.errors)
 
 
-
 class PasswordResetConfirmView(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request, uidb64, token):
         try:
             # Decode UID
@@ -204,15 +201,17 @@ class PasswordResetConfirmView(APIView):
             user = CustomUser.objects.get(id=uid)
         except (ValueError, CustomUser.DoesNotExist, TypeError):
             return not_found_error_response(detail="Invalid user or token.")
-        
+
         # Check the token
         if default_token_generator.check_token(user, token):
-            new_password = request.data.get('password')
+            new_password = request.data.get("password")
             print(new_password)
             if new_password:
                 user.set_password(new_password)
                 user.save()
-                return success_response(data={'message': 'Password has been reset successfully.'})
+                return success_response(
+                    data={"message": "Password has been reset successfully."}
+                )
             return validation_error_response(errors={"detail": "Password is required."})
 
         return validation_error_response(errors={"detail": "Invalid or expired token."})

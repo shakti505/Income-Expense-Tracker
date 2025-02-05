@@ -1,6 +1,5 @@
 from django.urls import path
 
-from transaction.views import GenerateMonthlyReportView
 from .views import (
     UserCreateView,
     LoginView,
@@ -23,11 +22,7 @@ urlpatterns = [
     ),
     path("users/<uuid:id>/", UserProfileView.as_view(), name="user-detail"),
     path("users/", UserListView.as_view(), name="get_all_users"),
-    path(
-        "users/monthly-report/",
-        GenerateMonthlyReportView.as_view(),
-        name="monthly-report",
-    ),
+   \
     path(
         "auth/password-reset/",
         PasswordResetRequestView.as_view(),
