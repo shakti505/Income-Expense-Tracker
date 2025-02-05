@@ -2,7 +2,7 @@ expense_tracker/.env
 expense_tracker/secrets.py
 celerybeat-schedule.db
 temp.py
-budget_tracker/migrations/
+budget/migrations/
 category/migrations/
 user/migrations/
 transaction/migrations/

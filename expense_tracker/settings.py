@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from .secrets import SECRET_KEY, DATABASE_USER, DATABASE_PASSWORD
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,8 +44,11 @@ INSTALLED_APPS = [
     "user",  # User app
     "transaction",  # Transaction app
     "category",  # Category app
+    "budget",  # Budget app
     'django_celery_results',
-    'django_celery_beat'
+    'django_celery_beat',
+    'drf_yasg',
+
 ]
 
 MIDDLEWARE = [
@@ -71,6 +74,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
             ],
         },
     },
@@ -85,7 +89,7 @@ WSGI_APPLICATION = "expense_tracker.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "expense_tracker",
+        "NAME": "finance_tracker",
         "USERNAME": DATABASE_USER,
         "PASSWORD": DATABASE_PASSWORD,
     }
@@ -146,10 +150,10 @@ REST_FRAMEWORK = {
 }
 
 
-from datetime import timedelta
+
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=5),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -160,5 +164,8 @@ SIMPLE_JWT = {
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_TIMEZONE = "Asia/Kolkata"
+
+# settings.py
+APPEND_SLASH = False
 
 

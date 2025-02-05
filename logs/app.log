@@ -1,0 +1,1337 @@
+2025-02-05 11:02:37,413 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:04:29,698 [INFO] /Users/mac/code/expense_tracker/transaction/models.py changed, reloading.
+2025-02-05 11:04:30,875 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:04:32,336 [INFO] /Users/mac/code/expense_tracker/transaction/models.py changed, reloading.
+2025-02-05 11:04:33,238 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:04:56,709 [INFO] /Users/mac/code/expense_tracker/transaction/models.py changed, reloading.
+2025-02-05 11:04:57,877 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:07:35,960 [INFO] /Users/mac/code/expense_tracker/transaction/models.py changed, reloading.
+2025-02-05 11:07:37,080 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:07:38,503 [INFO] /Users/mac/code/expense_tracker/transaction/models.py changed, reloading.
+2025-02-05 11:07:39,235 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:31:44,306 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:31:48,625 [WARNING] Forbidden: /api/transactions/
+2025-02-05 11:31:52,345 [INFO] User shakti_singh logged in successfully.
+2025-02-05 11:31:52,356 [INFO] Generated tokens for user shakti_singh.
+2025-02-05 11:31:56,159 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 42, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 65, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 182, in check_and_notify
+    percentage = self.spent_percentage
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 171, in spent_percentage
+    return (self.spent_amount / self.amount) * 100
+            ^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 162, in spent_amount
+    return self.transactions.aggregate(total=models.Sum("amount"))[
+           ^^^^^^^^^^^^^^^^^
+AttributeError: 'Budget' object has no attribute 'transactions'
+2025-02-05 11:32:47,106 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:32:47,973 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:33:25,680 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:33:26,469 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:33:28,708 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 43, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 66, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 182, in check_and_notify
+    percentage = self.spent_percentage
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 171, in spent_percentage
+    return (self.spent_amount / self.amount) * 100
+            ^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 162, in spent_amount
+    return self.transactions.aggregate(total=models.Sum("amount"))[
+           ^^^^^^^^^^^^^^^^^
+AttributeError: 'Budget' object has no attribute 'transactions'
+2025-02-05 11:36:36,427 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:36:37,430 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:37:10,607 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:38:10,552 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:38:11,593 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:38:18,988 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:38:19,635 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:39:11,302 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:39:44,896 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:39:46,175 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:39:50,754 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:39:51,654 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:39:52,181 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 194, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 236, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() got an unexpected keyword argument 'subject'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `Transaction.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `Transaction.objects.create()`. You may need to make the field read-only, or override the TransactionSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 194, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 236, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() got an unexpected keyword argument 'subject'
+
+2025-02-05 11:41:28,422 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:41:29,619 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:41:31,495 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 194, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 236, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() got an unexpected keyword argument 'subject'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `Transaction.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `Transaction.objects.create()`. You may need to make the field read-only, or override the TransactionSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 194, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 236, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() got an unexpected keyword argument 'subject'
+
+2025-02-05 11:41:44,625 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:41:45,889 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:41:48,653 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 194, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 235, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() got an unexpected keyword argument 'subject'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `Transaction.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `Transaction.objects.create()`. You may need to make the field read-only, or override the TransactionSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 194, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 235, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() got an unexpected keyword argument 'subject'
+
+2025-02-05 11:42:26,798 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:42:27,797 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:42:28,001 [ERROR] Failed to send budget alert: 'Settings' object has no attribute 'SENDGRID_TEMPLATE_ID'
+2025-02-05 11:43:36,396 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:43:37,698 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:43:39,288 [ERROR] Failed to send budget alert: Mail.__init__() got an unexpected keyword argument 'template_id'
+2025-02-05 11:43:50,641 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:43:51,514 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:44:12,544 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:44:13,462 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:44:13,881 [ERROR] Failed to send budget alert: Mail.__init__() got an unexpected keyword argument 'dynamic_template_data'
+2025-02-05 11:44:27,294 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:44:28,112 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:44:30,579 [ERROR] SendGrid API error: 'Settings' object has no attribute 'SENDGRID_API_KEY'
+2025-02-05 11:45:17,188 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:45:18,343 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:45:32,258 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:45:33,102 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:45:36,551 [ERROR] SendGrid API error: HTTP Error 403: Forbidden
+2025-02-05 11:46:32,635 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:46:33,773 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:46:39,938 [ERROR] SendGrid API error: HTTP Error 403: Forbidden
+2025-02-05 11:49:21,855 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:49:23,017 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:49:34,784 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:49:35,609 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:49:38,293 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 194, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 233, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() got an unexpected keyword argument 'amount'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `Transaction.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `Transaction.objects.create()`. You may need to make the field read-only, or override the TransactionSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 194, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 233, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() got an unexpected keyword argument 'amount'
+
+2025-02-05 11:49:51,646 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:49:52,449 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:49:54,896 [ERROR] SendGrid API error: HTTP Error 403: Forbidden
+2025-02-05 11:51:03,524 [ERROR] Internal Server Error: /api/budget/147c9814-1fae-4ea9-8020-f9ce8a34fbfb/
+2025-02-05 11:51:27,309 [INFO] /Users/mac/code/expense_tracker/budget/serializers.py changed, reloading.
+2025-02-05 11:51:28,412 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:51:29,437 [ERROR] Internal Server Error: /api/budget/147c9814-1fae-4ea9-8020-f9ce8a34fbfb/
+2025-02-05 11:51:38,142 [INFO] /Users/mac/code/expense_tracker/budget/serializers.py changed, reloading.
+2025-02-05 11:51:39,021 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:51:39,375 [ERROR] Internal Server Error: /api/budget/147c9814-1fae-4ea9-8020-f9ce8a34fbfb/
+2025-02-05 11:51:41,042 [ERROR] Internal Server Error: /api/budget/147c9814-1fae-4ea9-8020-f9ce8a34fbfb/
+2025-02-05 11:51:41,950 [ERROR] Internal Server Error: /api/budget/147c9814-1fae-4ea9-8020-f9ce8a34fbfb/
+2025-02-05 11:51:58,052 [INFO] /Users/mac/code/expense_tracker/budget/serializers.py changed, reloading.
+2025-02-05 11:51:58,861 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:52:08,216 [ERROR] SendGrid API error: HTTP Error 403: Forbidden
+2025-02-05 11:53:52,075 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 11:53:53,278 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:53:57,815 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:53:58,635 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:54:00,764 [ERROR] SendGrid error: b'{"errors":[{"message":"The from address does not match a verified Sender Identity. Mail cannot be sent until this error is resolved. Visit https://sendgrid.com/docs/for-developers/sending-email/sender-identity/ to see the Sender Identity requirements","field":"from","help":null}]}'
+2025-02-05 11:54:00,764 [ERROR] Email sending failed
+Traceback (most recent call last):
+  File "/Users/mac/code/expense_tracker/services/notification.py", line 128, in _send_email
+    response = sg.send(message)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/sendgrid/base_interface.py", line 63, in send
+    return self.client.mail.send.post(request_body=message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/python_http_client/client.py", line 277, in http_request
+    self._make_request(opener, request, timeout=timeout)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/python_http_client/client.py", line 184, in _make_request
+    raise exc
+python_http_client.exceptions.ForbiddenError: HTTP Error 403: Forbidden
+2025-02-05 11:54:11,200 [ERROR] SendGrid error: b'{"errors":[{"message":"The from address does not match a verified Sender Identity. Mail cannot be sent until this error is resolved. Visit https://sendgrid.com/docs/for-developers/sending-email/sender-identity/ to see the Sender Identity requirements","field":"from","help":null}]}'
+2025-02-05 11:54:11,200 [ERROR] Email sending failed
+Traceback (most recent call last):
+  File "/Users/mac/code/expense_tracker/services/notification.py", line 128, in _send_email
+    response = sg.send(message)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/sendgrid/base_interface.py", line 63, in send
+    return self.client.mail.send.post(request_body=message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/python_http_client/client.py", line 277, in http_request
+    self._make_request(opener, request, timeout=timeout)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/python_http_client/client.py", line 184, in _make_request
+    raise exc
+python_http_client.exceptions.ForbiddenError: HTTP Error 403: Forbidden
+2025-02-05 11:56:12,575 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 11:56:13,576 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:58:37,397 [INFO] Watching for file changes with StatReloader
+2025-02-05 11:58:40,952 [ERROR] SendGrid API error: HTTP Error 403: Forbidden
+2025-02-05 12:01:07,873 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:01:09,003 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:01:11,589 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:01:12,363 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:01:18,724 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 329, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 368, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() missing 4 required positional arguments: 'category_name', 'percentage', 'amount', and 'spent'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `Transaction.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `Transaction.objects.create()`. You may need to make the field read-only, or override the TransactionSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 329, in check_and_notify
+    self._send_critical_notification(percentage)
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 368, in _send_critical_notification
+    NotificationService.send_budget_alert(
+TypeError: NotificationService.send_budget_alert() missing 4 required positional arguments: 'category_name', 'percentage', 'amount', and 'spent'
+
+2025-02-05 12:01:26,511 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:01:27,364 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:01:30,926 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:01:31,841 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:01:35,332 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:01:36,083 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:01:39,777 [ERROR] SendGrid API error: HTTP Error 403: Forbidden
+2025-02-05 12:02:05,494 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:02:06,235 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:02:51,016 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:02:52,299 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:03:18,643 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:03:19,657 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:03:26,222 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:03:27,106 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:03:28,412 [ERROR] SendGrid API error: HTTP Error 403: Forbidden
+2025-02-05 12:03:47,312 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:03:48,131 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:03:52,038 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:07:22,596 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:07:23,767 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:07:39,712 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:07:40,514 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:08:10,894 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:08:11,661 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:08:14,173 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:09:35,037 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:09:36,453 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:10:43,106 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:10:43,967 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:11:28,910 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:11:30,216 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:12:07,759 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:12:08,954 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:12:20,725 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:12:21,797 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:12:31,600 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:12:32,385 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:12:33,665 [ERROR] SendGrid API error: 'Mail' object has no attribute 'category_name'
+2025-02-05 12:12:58,659 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:12:59,516 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:13:02,985 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:13:03,750 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:14:58,985 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:15:00,211 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:15:04,353 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:18:07,794 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:18:47,005 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:18:48,164 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:18:53,726 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:18:54,541 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:26:12,108 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:26:13,091 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:26:20,456 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:26:21,041 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:26:53,741 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:26:54,608 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:27:05,413 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:27:06,105 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:29:08,639 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:29:09,752 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:29:36,621 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:31:26,677 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:31:27,901 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:31:40,309 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:32:00,675 [WARNING] Forbidden: /api/transactions/
+2025-02-05 12:32:04,968 [INFO] User shakti_singh logged in successfully.
+2025-02-05 12:32:04,975 [INFO] Generated tokens for user shakti_singh.
+2025-02-05 12:32:06,855 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:32:36,029 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:36:23,480 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:36:24,656 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:36:28,587 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:36:58,525 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:36:59,653 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:37:01,723 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:37:24,969 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:37:25,909 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:37:26,656 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:40:21,889 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:40:23,378 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:41:30,026 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:41:31,201 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:41:32,388 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:41:47,169 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:41:48,055 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:41:48,759 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:42:06,141 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:42:07,020 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:42:07,758 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:42:33,291 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:42:34,043 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:42:35,546 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:42:36,265 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:42:39,737 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:42:44,460 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:42:45,499 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:43:51,987 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:43:53,230 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:45:35,068 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:45:36,400 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:45:38,566 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:45:46,219 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:45:46,985 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:46:11,126 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:46:12,133 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:46:13,733 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:47:15,571 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:47:16,696 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:47:36,162 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:48:02,824 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:48:03,784 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:48:08,287 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:48:09,042 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:48:22,899 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 12:48:23,676 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:48:30,281 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:48:31,039 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:50:06,510 [INFO] Budget alert email sent successfully: 202
+2025-02-05 12:52:15,892 [INFO] /Users/mac/code/expense_tracker/budget/tasks.py changed, reloading.
+2025-02-05 12:52:17,034 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:52:22,422 [INFO] /Users/mac/code/expense_tracker/budget/tasks.py changed, reloading.
+2025-02-05 12:52:23,188 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:52:31,557 [INFO] /Users/mac/code/expense_tracker/budget/tasks.py changed, reloading.
+2025-02-05 12:52:32,376 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:52:43,771 [INFO] /Users/mac/code/expense_tracker/budget/tasks.py changed, reloading.
+2025-02-05 12:52:44,515 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:53:19,172 [INFO] /Users/mac/code/expense_tracker/budget/apps.py changed, reloading.
+2025-02-05 12:53:19,841 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:53:32,620 [INFO] /Users/mac/code/expense_tracker/budget/serializers.py changed, reloading.
+2025-02-05 12:53:33,770 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:53:43,268 [INFO] /Users/mac/code/expense_tracker/budget/serializers.py changed, reloading.
+2025-02-05 12:53:43,996 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:54:28,962 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:54:31,648 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:54:38,196 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:54:39,004 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:54:44,479 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:54:45,261 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:54:49,803 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 12:54:50,590 [INFO] Watching for file changes with StatReloader
+2025-02-05 12:56:16,077 [INFO] User shakti_user123 created successfully.
+2025-02-05 12:56:16,084 [INFO] Generated tokens for user shakti_user123.
+2025-02-05 13:00:01,942 [INFO] User shakti_user12345 created successfully.
+2025-02-05 13:00:01,946 [INFO] Generated tokens for user shakti_user12345.
+2025-02-05 13:00:56,339 [INFO] /Users/mac/code/expense_tracker/utils/send_mail.py changed, reloading.
+2025-02-05 13:00:57,607 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:01:18,833 [INFO] /Users/mac/code/expense_tracker/user/views.py changed, reloading.
+2025-02-05 13:01:19,669 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:01:41,919 [INFO] /Users/mac/code/expense_tracker/user/views.py changed, reloading.
+2025-02-05 13:01:42,790 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:01:59,753 [INFO] /Users/mac/code/expense_tracker/user/views.py changed, reloading.
+2025-02-05 13:02:00,512 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:02:30,002 [INFO] /Users/mac/code/expense_tracker/user/views.py changed, reloading.
+2025-02-05 13:02:30,821 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:02:40,542 [INFO] /Users/mac/code/expense_tracker/user/views.py changed, reloading.
+2025-02-05 13:02:41,385 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:02:43,638 [INFO] /Users/mac/code/expense_tracker/user/views.py changed, reloading.
+2025-02-05 13:02:44,358 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:05:39,584 [INFO] /Users/mac/code/expense_tracker/services/notification.py changed, reloading.
+2025-02-05 13:05:40,716 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:10:00,864 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 13:10:02,089 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:21:38,233 [INFO] /Users/mac/code/expense_tracker/budget/tasks.py changed, reloading.
+2025-02-05 13:21:39,214 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:23:30,761 [INFO] /Users/mac/code/expense_tracker/budget/tasks.py changed, reloading.
+2025-02-05 13:23:31,863 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:26:22,263 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 13:26:23,204 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:26:34,613 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 13:27:28,653 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:27:40,062 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 13:34:48,352 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:34:50,851 [WARNING] Forbidden: /api/transactions/
+2025-02-05 13:34:55,336 [INFO] User shakti_singh logged in successfully.
+2025-02-05 13:34:55,345 [INFO] Generated tokens for user shakti_singh.
+2025-02-05 13:34:58,102 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 54, in check_and_notify
+    check_and_notify_budget(self.id)
+  File "/Users/mac/code/expense_tracker/budget/services/budget_service.py", line 26, in check_and_notify_budget
+    percentage = budget.spent_percentage  # From async calculation
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Budget' object has no attribute 'spent_percentage'
+2025-02-05 13:35:12,900 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_service.py changed, reloading.
+2025-02-05 13:35:13,986 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:35:19,551 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_service.py changed, reloading.
+2025-02-05 13:35:20,372 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:35:22,356 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 54, in check_and_notify
+    check_and_notify_budget(self.id)
+  File "/Users/mac/code/expense_tracker/budget/services/budget_service.py", line 26, in check_and_notify_budget
+    percentage = budget.spent_percentage  # From async calculation
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Budget' object has no attribute 'spent_percentage'
+2025-02-05 13:37:28,423 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 13:37:29,598 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:37:30,508 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 54, in check_and_notify
+    check_and_notify_budget(self.id)
+  File "/Users/mac/code/expense_tracker/budget/services/budget_service.py", line 29, in check_and_notify_budget
+    if percentage >= budget.CRITICAL_THRESHOLD:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'method' and 'decimal.Decimal'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `Transaction.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `Transaction.objects.create()`. You may need to make the field read-only, or override the TransactionSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 54, in check_and_notify
+    check_and_notify_budget(self.id)
+  File "/Users/mac/code/expense_tracker/budget/services/budget_service.py", line 29, in check_and_notify_budget
+    if percentage >= budget.CRITICAL_THRESHOLD:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'method' and 'decimal.Decimal'
+
+2025-02-05 13:37:43,457 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 13:37:44,336 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:37:45,275 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 54, in check_and_notify
+    check_and_notify_budget(self.id)
+  File "/Users/mac/code/expense_tracker/budget/services/budget_service.py", line 29, in check_and_notify_budget
+    if percentage >= budget.CRITICAL_THRESHOLD:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'method' and 'decimal.Decimal'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `Transaction.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `Transaction.objects.create()`. You may need to make the field read-only, or override the TransactionSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 54, in check_and_notify
+    check_and_notify_budget(self.id)
+  File "/Users/mac/code/expense_tracker/budget/services/budget_service.py", line 29, in check_and_notify_budget
+    if percentage >= budget.CRITICAL_THRESHOLD:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'method' and 'decimal.Decimal'
+
+2025-02-05 13:37:49,925 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 13:37:50,719 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:37:53,324 [ERROR] Internal Server Error: /api/transactions/
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 54, in check_and_notify
+    check_and_notify_budget(self.id)
+  File "/Users/mac/code/expense_tracker/budget/services/budget_service.py", line 29, in check_and_notify_budget
+    if percentage >= budget.CRITICAL_THRESHOLD:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'method' and 'decimal.Decimal'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 159, in post
+    return self.handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 114, in handle_exception
+    return super().handle_exception(exc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/mac/code/expense_tracker/transaction/views.py", line 155, in post
+    serializer.save()
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `Transaction.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `Transaction.objects.create()`. You may need to make the field read-only, or override the TransactionSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/rest_framework/serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mac/.pyenv/versions/3.11.0/envs/expense_tracker_env/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 107, in save
+    self._trigger_budget_check()
+  File "/Users/mac/code/expense_tracker/transaction/models.py", line 131, in _trigger_budget_check
+    budget.check_and_notify()
+  File "/Users/mac/code/expense_tracker/budget/models.py", line 54, in check_and_notify
+    check_and_notify_budget(self.id)
+  File "/Users/mac/code/expense_tracker/budget/services/budget_service.py", line 29, in check_and_notify_budget
+    if percentage >= budget.CRITICAL_THRESHOLD:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'method' and 'decimal.Decimal'
+
+2025-02-05 13:39:08,049 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 13:39:35,118 [INFO] Watching for file changes with StatReloader
+2025-02-05 13:39:37,819 [INFO] Budget alert email sent successfully: 202
+2025-02-05 14:28:54,142 [INFO] Budget alert email sent successfully: 202
+2025-02-05 14:32:16,405 [WARNING] Bad Request: /api/transactions/700727f4-712a-419e-897a-90688b266210/
+2025-02-05 14:32:45,327 [INFO] /Users/mac/code/expense_tracker/transaction/views.py changed, reloading.
+2025-02-05 14:32:46,603 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:32:57,241 [INFO] Budget alert email sent successfully: 202
+2025-02-05 14:33:28,606 [INFO] Budget alert email sent successfully: 202
+2025-02-05 14:34:03,177 [INFO] Budget alert email sent successfully: 202
+2025-02-05 14:34:51,237 [INFO] Budget alert email sent successfully: 202
+2025-02-05 14:35:17,148 [INFO] /Users/mac/code/expense_tracker/transaction/models.py changed, reloading.
+2025-02-05 14:35:18,310 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:37:49,461 [WARNING] Forbidden: /api/transactions/700727f4-712a-419e-897a-90688b266210/
+2025-02-05 14:37:54,025 [INFO] User shakti_singh logged in successfully.
+2025-02-05 14:37:54,035 [INFO] Generated tokens for user shakti_singh.
+2025-02-05 14:37:56,878 [INFO] Budget alert email sent successfully: 202
+2025-02-05 14:38:32,882 [INFO] Budget alert email sent successfully: 202
+2025-02-05 14:40:22,326 [INFO] /Users/mac/code/expense_tracker/budget/services/tasks.py changed, reloading.
+2025-02-05 14:40:23,520 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:46:20,559 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_service.py changed, reloading.
+2025-02-05 14:47:29,506 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:48:33,479 [INFO] /Users/mac/code/expense_tracker/budget/models.py changed, reloading.
+2025-02-05 14:48:34,386 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:52:35,780 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_service.py changed, reloading.
+2025-02-05 14:52:36,725 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:52:55,278 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_service.py changed, reloading.
+2025-02-05 14:52:55,870 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:53:10,323 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_service.py changed, reloading.
+2025-02-05 14:53:11,004 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:53:12,267 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_service.py changed, reloading.
+2025-02-05 14:53:12,810 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:55:18,642 [INFO] /Users/mac/code/expense_tracker/budget/services/tasks.py changed, reloading.
+2025-02-05 14:55:19,623 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:55:33,064 [INFO] /Users/mac/code/expense_tracker/budget/services/tasks.py changed, reloading.
+2025-02-05 14:55:33,643 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:56:45,766 [INFO] /Users/mac/code/expense_tracker/budget/services/tasks.py changed, reloading.
+2025-02-05 14:56:46,715 [INFO] Watching for file changes with StatReloader
+2025-02-05 14:56:55,079 [INFO] /Users/mac/code/expense_tracker/budget/services/tasks.py changed, reloading.
+2025-02-05 14:56:55,725 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:09:26,063 [INFO] /Users/mac/code/expense_tracker/budget/services/tasks.py changed, reloading.
+2025-02-05 15:09:27,041 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:09:51,624 [INFO] /Users/mac/code/expense_tracker/budget/services/tasks.py changed, reloading.
+2025-02-05 15:09:52,253 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:10:24,926 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:10:25,588 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:16:05,747 [INFO] /Users/mac/code/expense_tracker/transaction/apps.py changed, reloading.
+2025-02-05 15:21:54,319 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:22:25,955 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:22:26,674 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:22:27,939 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:22:28,569 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:23:58,878 [INFO] /Users/mac/code/expense_tracker/budget/apps.py changed, reloading.
+2025-02-05 15:23:59,880 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:24:17,379 [INFO] /Users/mac/code/expense_tracker/budget/apps.py changed, reloading.
+2025-02-05 15:25:10,266 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:26:54,762 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:26:55,793 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:26:58,104 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:26:58,704 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:27:15,419 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:28:41,744 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:28:42,770 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:30:35,557 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:30:36,592 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:30:41,950 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:30:42,549 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:30:46,845 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:30:47,465 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:30:58,858 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:30:59,481 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:31:02,763 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:31:03,389 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:32:43,915 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:32:44,978 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:32:51,359 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:32:52,004 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:32:59,327 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:32:59,916 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:33:05,223 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:33:05,872 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:35:10,544 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:35:11,532 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:35:12,834 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:35:13,287 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:35:19,622 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:35:20,261 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:35:21,537 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:35:22,150 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:37:02,556 [INFO] /Users/mac/code/expense_tracker/budget/services/budget_repository.py changed, reloading.
+2025-02-05 15:37:03,553 [INFO] Watching for file changes with StatReloader
+2025-02-05 15:41:18,847 [INFO] /Users/mac/code/expense_tracker/utils/send_mail.py changed, reloading.
+2025-02-05 15:41:19,810 [INFO] Watching for file changes with StatReloader
