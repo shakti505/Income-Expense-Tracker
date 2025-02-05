@@ -8,7 +8,7 @@ from .views import (
     UpdatePasswordView,
     UserListView,
     PasswordResetConfirmView,
-    PasswordResetRequestView
+    PasswordResetRequestView,
 )
 
 urlpatterns = [
@@ -22,7 +22,6 @@ urlpatterns = [
     ),
     path("users/<uuid:id>/", UserProfileView.as_view(), name="user-detail"),
     path("users/", UserListView.as_view(), name="get_all_users"),
-   \
     path(
         "auth/password-reset/",
         PasswordResetRequestView.as_view(),
