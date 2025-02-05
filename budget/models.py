@@ -1,16 +1,21 @@
-from django.db import models
-
-# models.py
+from decimal import Decimal
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from user.models import CustomUser
 from category.models import Category
-from utils.models import BaseModel, SoftDeleteModel
-from datetime import date
-import calendar
+from utils.models import BaseModel
+from datetime import timedelta
 
-class Budget(BaseModel, SoftDeleteModel):
-    """Budget model with notification threshold"""
+
+class Budget(BaseModel):
+    """
+    Budget model with threshold crossing detection and spam prevention.
+    """
+
+    WARNING_THRESHOLD = Decimal("90.00")
+    CRITICAL_THRESHOLD = Decimal("100.00")
+    RESET_THRESHOLD = Decimal("85.00")
+    NOTIFICATION_COOLDOWN = timedelta(hours=24)
 
     user = models.ForeignKey(
         CustomUser,
@@ -25,23 +30,19 @@ class Budget(BaseModel, SoftDeleteModel):
     year = models.PositiveIntegerField()
     month = models.PositiveIntegerField(
         validators=[
-            MinValueValidator(1, message="Month must be between 1 and 12"),
-            MaxValueValidator(12, message="Month must be between 1 and 12")
+            MinValueValidator(1),
+            MaxValueValidator(12),
         ]
     )
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-
-    notification_threshold = models.DecimalField(
-        max_digits=5, 
-        decimal_places=2,
-        default=90.00,
+    amount = models.DecimalField(
+        max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal("0.01"))]
     )
-    is_notified = models.BooleanField(default=False, help_text="Indicates if notification has been sent")
+
+    # Track last warning notification time
+    last_warning_sent_at = models.DateTimeField(null=True, blank=True)
+    # Track if spending was previously below warning threshold
+    was_below_warning = models.BooleanField(default=True)
 
     class Meta:
         ordering = ["-year", "-month"]
-        unique_together = ['user', 'category', 'year', 'month', 'is_deleted']
-
-    def __str__(self):
-        return f"{self.name} - {self.month}/{self.year}"
-
+        unique_together = ["user", "category", "year", "month", "is_deleted"]
