@@ -20,12 +20,13 @@ def track_and_notify_budget(transaction_id):
         transaction = Transaction.objects.get(id=transaction_id)
 
         # Get the budget for the category and time of the transaction
-        budget = Budget.objects.get(
+        budget = Budget.objects.filter(
             user=transaction.user,
             category=transaction.category,
             year=transaction.date.year,
             month=transaction.date.month,
-        )
+            is_deleted=False,
+        ).first()
 
         # Calculate the total spending for the category and time period
         total_spent = Transaction.objects.filter(
@@ -35,17 +36,17 @@ def track_and_notify_budget(transaction_id):
             date__month=transaction.date.month,
             is_deleted=False,
         ).aggregate(Sum("amount"))["amount__sum"] or Decimal("0")
-        # print(budget)
-        # print(total_spent)
+        print(budget.amount)
+        print(total_spent)
         # Check if the spending has exceeded any thresholds
-        if total_spent >= budget.amount:
-            send_budget_alert(budget, total_spent, transaction.amount)
-
+        total_spent_percentage = (total_spent / budget.amount) * 100
+        print(total_spent_percentage)
         # Check for warning and critical thresholds
-        if total_spent >= budget.CRITICAL_THRESHOLD:
+        if total_spent_percentage >= budget.CRITICAL_THRESHOLD:
             print(total_spent)
             send_budget_alert(budget, total_spent, transaction.amount, critical=True)
-        elif total_spent >= budget.WARNING_THRESHOLD and budget.was_below_warning:
+        elif total_spent_percentage >= budget.WARNING_THRESHOLD:
+            print("Hello")
             send_budget_alert(budget, total_spent, transaction.amount)
 
         # Update the last warning sent time after notifying, use timezone.now() for timezone-aware datetime
@@ -84,8 +85,3 @@ def send_budget_alert(budget, total_spent, new_spent, critical=False):
         subject=subject,
         content=content,
     )
-
-    # Update the flag indicating whether the spending was below warning threshold
-    if total_spent >= budget.WARNING_THRESHOLD:
-        budget.was_below_warning = False
-        budget.save()
